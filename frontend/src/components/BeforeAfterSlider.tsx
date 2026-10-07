@@ -1,4 +1,4 @@
-import React, { useState, useRef, MouseEvent, TouchEvent, ReactNode } from 'react';
+import React, { useState, useRef, type MouseEvent, type TouchEvent, type ReactNode } from 'react';
 import styles from './BeforeAfterSlider.module.css';
 
 interface BeforeAfterSliderProps {
