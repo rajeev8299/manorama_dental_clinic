@@ -314,7 +314,7 @@ const Contact = () => {
           max-width: 1200px;
           margin: 0 auto;
           gap: var(--spacing-2xl);
-          align-items: start;
+          align-items: stretch;
         }
         .form-row {
           display: grid;
