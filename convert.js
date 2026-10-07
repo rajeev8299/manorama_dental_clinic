@@ -1,0 +1,18 @@
+const fs = require('fs');
+const data = fs.readFileSync('user_html.html', 'utf8');
+const styleMatch = data.match(/<style>([\s\S]*?)<\/style>/);
+const style = styleMatch ? styleMatch[1] : '';
+fs.writeFileSync('frontend/src/components/HeroBanner.css', style);
+const bodyMatch = data.match(/<section class="hero"[\s\S]*?<\/section>/);
+let html = bodyMatch ? bodyMatch[0] : '';
+html = html.replace(/class=/g, 'className=');
+html = html.replace(/stroke-width=/g, 'strokeWidth=');
+html = html.replace(/stroke-linejoin=/g, 'strokeLinejoin=');
+html = html.replace(/<img([^>]*[^\/])>/g, '<img$1 />');
+html = html.replace(/<path([^>]*[^\/])>/g, '<path$1 />');
+html = html.replace(/<stop([^>]*[^\/])>/g, '<stop$1 />');
+html = html.replace(/<br>/g, '<br />');
+html = html.replace(/<!--([\s\S]*?)-->/g, '{/* $1 */}');
+const jsx = `import React from 'react';\nimport './HeroBanner.css';\n\nconst HeroBanner = () => {\n  return (\n    ${html}\n  );\n};\n\nexport default HeroBanner;`;
+fs.writeFileSync('frontend/src/components/HeroBanner.tsx', jsx);
+console.log('Created HeroBanner');

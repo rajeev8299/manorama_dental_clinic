@@ -1,0 +1,52 @@
+.adminContainer {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+.sidebar {
+  width: 250px;
+  background-color: #0F2A4A;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+.sidebarHeader {
+  padding: 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.sidebarHeader h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+}
+.sidebarNav {
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.navLink, .logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  color: #CBD5E1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  width: 100%;
+  text-align: left;
+}
+.navLink:hover, .navLink:active {
+  background-color: rgba(255,255,255,0.1);
+  color: white;
+}
+.mainContent {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}

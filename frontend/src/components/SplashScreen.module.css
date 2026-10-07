@@ -1,0 +1,94 @@
+.splashContainer {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: all; /* block interactions while loading */
+}
+
+.splashContainer.isOpen {
+  pointer-events: none;
+}
+
+.shutterTop, .shutterBottom {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50vh;
+  background-color: var(--color-primary); /* Deep Navy Blue */
+  transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+  z-index: 99998;
+}
+
+.shutterTop {
+  top: 0;
+  transform-origin: top;
+  border-bottom: 2px solid var(--color-accent);
+}
+
+.shutterBottom {
+  bottom: 0;
+  transform-origin: bottom;
+  border-top: 2px solid var(--color-accent);
+}
+
+.isOpen .shutterTop {
+  transform: translateY(-100%);
+}
+
+.isOpen .shutterBottom {
+  transform: translateY(100%);
+}
+
+.content {
+  position: relative;
+  z-index: 99999;
+  color: white;
+  text-align: center;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  padding: 2rem;
+}
+
+.isOpen .content {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  letter-spacing: 2px;
+  margin: 0;
+  text-transform: uppercase;
+  color: white;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--color-accent-light);
+  letter-spacing: 5px;
+  margin-top: 15px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Optional: Add a subtle loading pulse to the text */
+.content {
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.isOpen .content {
+  animation: none; /* Stop pulsing when opening */
+}

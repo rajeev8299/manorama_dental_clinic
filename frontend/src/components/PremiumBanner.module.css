@@ -1,0 +1,316 @@
+.premiumBannerSection {
+  padding: 2rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.bannerContainer {
+  position: relative;
+  width: 95%;
+  max-width: 1400px;
+  border-radius: 32px;
+  background-color: #F5FBFE;
+  box-shadow: 0 10px 40px rgba(0, 142, 204, 0.1);
+  overflow: hidden;
+  padding: 3rem 2rem;
+  display: flex;
+  align-items: center;
+  min-height: 400px;
+}
+
+.bgElements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.waveTop {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: radial-gradient(ellipse at top, #E8F7FC 0%, transparent 70%);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3); /* Subtle gold */
+  border-radius: 50%;
+  transform: scaleX(1.5);
+}
+
+.waveBottom {
+  position: absolute;
+  bottom: -50px;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: radial-gradient(ellipse at bottom, #BDE8F8 0%, transparent 70%);
+  border-top: 1px solid rgba(212, 175, 55, 0.3); /* Subtle gold */
+  border-radius: 50%;
+  transform: scaleX(1.5);
+}
+
+.hugeTextBg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11vw;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #BDE8F8;
+  opacity: 0.5;
+  white-space: nowrap;
+  font-family: var(--font-heading);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.contentLayout {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.leftContent {
+  flex: 1;
+  max-width: 400px;
+}
+
+.logoArea {
+  margin-bottom: 2rem;
+}
+
+.logoImg {
+  max-width: 200px;
+}
+
+.headline {
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
+  color: #0c2b4b;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.subheadline {
+  font-size: 1.2rem;
+  color: var(--color-text);
+  margin-bottom: 2.5rem;
+}
+
+.highlightText {
+  color: #008ecc;
+  font-weight: 700;
+}
+
+.featuresList {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.85rem;
+  color: #0c2b4b;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.featureIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 142, 204, 0.1);
+}
+
+.centerGraphic {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+.toothGraphic {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: multiply; /* Helps blend the white bg of generated image */
+  border-radius: 50%; /* if it has corners */
+}
+
+.doctorForeground {
+  position: absolute;
+  z-index: 2;
+  width: 280px;
+  height: 380px;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.doctorImgCutout {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  border-radius: 20px;
+}
+
+.rightContent {
+  flex: 1;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.descText {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  margin-bottom: 2rem;
+}
+
+.descText strong {
+  color: #0c2b4b;
+  font-weight: 700;
+}
+
+.ctaArea {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.callBox {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.phoneIconWrapper {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #008ecc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phoneText {
+  display: flex;
+  flex-direction: column;
+}
+
+.phoneText span {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.phoneText strong {
+  font-size: 1.4rem;
+  color: #0c2b4b;
+}
+
+.bookBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ff5733; /* Coral/red-orange */
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  box-shadow: 0 8px 20px rgba(255,  87,  51,  0.3);
+  transition: transform 0.3s,  box-shadow 0.3s;
+}
+.bookBtn:hover, .bookBtn:active {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(255, 87, 51, 0.4);
+}
+
+@media (max-width: 1200px) {
+  .hugeTextBg {
+    font-size: 14vw;
+  }
+  .featuresList {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .contentLayout {
+    gap: 1rem;
+  }
+  .centerGraphic {
+    width: 300px;
+    height: 300px;
+  }
+  .doctorForeground {
+    width: 220px;
+    height: 300px;
+  }
+  .headline {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .contentLayout {
+    flex-direction: column;
+    text-align: center;
+  }
+  .leftContent, .rightContent {
+    max-width: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .featuresList {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .ctaArea {
+    align-items: center;
+  }
+  .hugeTextBg {
+    font-size: 18vw;
+    top: 30%;
+  }
+  .waveTop, .waveBottom {
+    border-radius: 0;
+  }
+}
