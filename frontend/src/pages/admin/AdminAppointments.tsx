@@ -16,7 +16,7 @@ const AdminAppointments = () => {
   const fetchAppointments = async () => {
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch('http://localhost:5000/api/appointments', {
+      const res = await fetch('/api/appointments', {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -34,7 +34,7 @@ const AdminAppointments = () => {
   const updateStatus = async (id: string, status: string) => {
     const token = localStorage.getItem('adminToken');
     try {
-      await fetch(`http://localhost:5000/api/appointments/${id}`, {
+      await fetch(`/api/appointments/${id}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

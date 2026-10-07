@@ -30,7 +30,7 @@ const AdminPatients = () => {
 
   const fetchPatients = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/patients');
+      const response = await fetch('/api/patients');
       const data = await response.json();
       setPatients(data);
     } catch (error) {
@@ -47,7 +47,7 @@ const AdminPatients = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/patients', {
+      const response = await fetch('/api/patients', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
