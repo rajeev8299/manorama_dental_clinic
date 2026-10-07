@@ -45,7 +45,7 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
-            <Link to="/contact" className={styles.btnPrimary}>
+            <Link to="/book-appointment" className={styles.btnPrimary}>
               Book Appointment
             </Link>
           </div>
@@ -74,7 +74,7 @@ const Navbar = () => {
               </Link>
             ))}
             <Link 
-              to="/contact" 
+              to="/book-appointment" 
               className={styles.btnPrimary}
               onClick={() => setIsMobileMenuOpen(false)}
             >

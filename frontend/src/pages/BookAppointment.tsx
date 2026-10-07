@@ -3,11 +3,13 @@ import { MapPin, Phone, Clock } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import { supabase } from '../lib/supabase';
 
-const Contact = () => {
+const BookAppointment = () => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
+    date: '',
+    time: '',
     message: ''
   });
   
@@ -23,21 +25,23 @@ const Contact = () => {
     setStatus('submitting');
     setErrorMessage('');
     
-    if (!formData.name || !formData.phone || !formData.message) {
+    if (!formData.name || !formData.phone || !formData.date || !formData.time) {
       setStatus('error');
-      setErrorMessage('Please fill in all required fields (Name, Phone, Message).');
+      setErrorMessage('Please fill in all required fields.');
       return;
     }
 
     try {
       const { error } = await supabase
-        .from('contact_messages')
+        .from('appointments')
         .insert([
           {
             name: formData.name,
             phone: formData.phone,
             email: formData.email || null,
-            message: formData.message
+            preferred_date: formData.date,
+            preferred_time: formData.time,
+            message: formData.message || null
           }
         ]);
       
@@ -46,9 +50,9 @@ const Contact = () => {
       }
       
       setStatus('success');
-      setFormData({ name: '', phone: '', email: '', message: '' });
+      setFormData({ name: '', phone: '', email: '', date: '', time: '', message: '' });
     } catch (err) {
-      console.error('Error submitting message:', err);
+      console.error('Error submitting appointment:', err);
       setStatus('error');
       setErrorMessage('Something went wrong. Please try again later.');
     }
@@ -60,9 +64,9 @@ const Contact = () => {
       <section style={{ padding: 'var(--spacing-2xl) 0 var(--spacing-xl)', backgroundColor: 'var(--color-sage)' }}>
         <div className="container" style={{ textAlign: 'center' }}>
           <ScrollReveal>
-            <h1 style={{ fontSize: '4rem', marginBottom: 'var(--spacing-sm)', color: 'var(--color-primary)' }}>Contact <span style={{ color: 'var(--color-accent)' }}>Us</span></h1>
+            <h1 style={{ fontSize: '4rem', marginBottom: 'var(--spacing-sm)', color: 'var(--color-primary)' }}>Contact & <span style={{ color: 'var(--color-accent)' }}>Appointments</span></h1>
             <p style={{ color: 'var(--color-text-muted)', maxWidth: '600px', margin: '0 auto', fontSize: '1.25rem', lineHeight: 1.6 }}>
-              Get in touch with Dr. Amit Kumar Dubey for any inquiries.
+              Schedule your visit with Dr. Amit Kumar Dubey. We look forward to providing you with premium dental care.
             </p>
           </ScrollReveal>
         </div>
@@ -77,7 +81,7 @@ const Contact = () => {
               {/* Appointment Form */}
               <div style={{ padding: 'var(--spacing-2xl)', display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg, rgba(224, 242, 254, 0.95) 0%, rgba(240, 249, 255, 0.8) 100%)', backdropFilter: 'blur(10px)', borderRadius: '24px', boxShadow: '0 25px 50px rgba(14, 165, 233, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.8)', border: '1px solid rgba(14, 165, 233, 0.3)' }}>
                 <h2 style={{ fontSize: '2.5rem', marginBottom: 'var(--spacing-xl)', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', textAlign: 'center' }}>
-                  Send a Message
+                  Book an Appointment
                 </h2>
                 
                 {status === 'success' ? (
@@ -85,14 +89,14 @@ const Contact = () => {
                     <div style={{ display: 'inline-flex', background: '#166534', color: 'white', borderRadius: '50%', padding: '12px', marginBottom: '1rem' }}>
                       <MapPin size={32} />
                     </div>
-                    <h3 style={{ marginBottom: 'var(--spacing-sm)', fontSize: '1.5rem' }}>Message Sent Successfully!</h3>
-                    <p style={{ fontSize: '1.05rem', opacity: 0.9 }}>Your message has been submitted. Our team will contact you shortly.</p>
+                    <h3 style={{ marginBottom: 'var(--spacing-sm)', fontSize: '1.5rem' }}>Request Sent Successfully!</h3>
+                    <p style={{ fontSize: '1.05rem', opacity: 0.9 }}>Your appointment request has been submitted. Our team will contact you shortly to confirm your timing.</p>
                     <button 
                       onClick={() => setStatus('idle')}
                       className="btn-primary"
                       style={{ marginTop: 'var(--spacing-xl)' }}
                     >
-                      Send Another Message
+                      Book Another Appointment
                     </button>
                   </div>
                 ) : (
@@ -139,16 +143,42 @@ const Contact = () => {
                       />
                     </div>
 
-
+                    <div className="form-row">
+                      <div className="input-group">
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Preferred Date *</label>
+                        <input 
+                          type="date" 
+                          name="date" 
+                          value={formData.date} 
+                          onChange={handleChange} 
+                          required 
+                          style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none', fontFamily: 'inherit' }}
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Preferred Time *</label>
+                        <select 
+                          name="time" 
+                          value={formData.time} 
+                          onChange={handleChange} 
+                          required 
+                          style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none', fontFamily: 'inherit' }}
+                        >
+                          <option value="">Select a time</option>
+                          <option value="Morning">Morning (9 AM - 12 PM)</option>
+                          <option value="Afternoon">Afternoon (12 PM - 4 PM)</option>
+                          <option value="Evening">Evening (4 PM - 8 PM)</option>
+                        </select>
+                      </div>
+                    </div>
 
                     <div className="input-group">
-                      <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Message *</label>
+                      <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Message / Reason for Visit</label>
                       <textarea 
                         name="message" 
                         value={formData.message} 
                         onChange={handleChange} 
                         rows={4}
-                        required
                         style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none', resize: 'vertical', fontFamily: 'inherit' }}
                       ></textarea>
                     </div>
@@ -174,7 +204,7 @@ const Contact = () => {
                         letterSpacing: '1px'
                       }}
                     >
-                      {status === 'submitting' ? 'Sending...' : 'Send Message'}
+                      {status === 'submitting' ? 'Submitting...' : 'Request Appointment'}
                     </button>
                   </form>
                 )}
@@ -331,4 +361,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default BookAppointment;

@@ -5,6 +5,7 @@ import About from './pages/About';
 import Services from './pages/Services';
 
 import Contact from './pages/Contact';
+import BookAppointment from './pages/BookAppointment';
 import SplashScreen from './components/SplashScreen';
 
 // Admin Imports
@@ -31,6 +32,7 @@ function App() {
             <Route path="about" element={<About />} />
             <Route path="services" element={<Services />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="book-appointment" element={<BookAppointment />} />
           </Route>
 
           {/* Admin Routes */}
