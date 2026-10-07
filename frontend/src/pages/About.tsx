@@ -81,7 +81,7 @@ const About = () => {
               <h2 style={{ fontSize: '3rem', color: 'var(--color-primary)' }}>Mission & Vision</h2>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
-              <Hover3DCard className="premium-card" style={{ padding: '3rem', background: 'linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url("/images/mission_bg.jpg") center/cover', textAlign: 'center' }}>
+              <Hover3DCard className="premium-card" style={{ padding: '3rem', background: 'linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url("/images/mission_bg.jpg") center/cover', textAlign: 'center' }}>
                 <div style={{ width: '80px', height: '80px', background: 'rgba(8,123,193,0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem' }}>
                   <Heart size={40} color="var(--color-accent)" />
                 </div>
@@ -91,7 +91,7 @@ const About = () => {
                 </p>
               </Hover3DCard>
               
-              <Hover3DCard className="premium-card" style={{ padding: '3rem', background: 'linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url("/images/vision_bg.jpg") center/cover', textAlign: 'center' }}>
+              <Hover3DCard className="premium-card" style={{ padding: '3rem', background: 'linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url("/images/vision_bg.jpg") center/cover', textAlign: 'center' }}>
                 <div style={{ width: '80px', height: '80px', background: 'rgba(8,123,193,0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem' }}>
                   <Shield size={40} color="var(--color-accent)" />
                 </div>
