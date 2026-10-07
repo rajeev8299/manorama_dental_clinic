@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { MapPin, Phone, Clock } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
+import { supabase } from '../lib/supabase';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -31,39 +32,29 @@ const Contact = () => {
     }
 
     try {
-      const formPayload = {
-        access_key: "YOUR_ACCESS_KEY_HERE",
-        subject: `New Appointment Request from ${formData.name}`,
-        from_name: "Manorama Dental Clinic",
-        name: formData.name,
-        phone: formData.phone,
-        email: formData.email,
-        date: formData.date,
-        time: formData.time,
-        message: formData.message
-      };
+      const { error } = await supabase
+        .from('appointments')
+        .insert([
+          {
+            name: formData.name,
+            phone: formData.phone,
+            email: formData.email || null,
+            preferred_date: formData.date,
+            preferred_time: formData.time,
+            message: formData.message || null
+          }
+        ]);
       
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(formPayload)
-      });
-      
-      const json = await response.json();
-      
-      if (!response.ok || !json.success) {
-        throw new Error(json.message || 'Failed to submit appointment');
+      if (error) {
+        throw error;
       }
       
       setStatus('success');
       setFormData({ name: '', phone: '', email: '', date: '', time: '', message: '' });
     } catch (err) {
-      console.error(err);
+      console.error('Error submitting appointment:', err);
       setStatus('error');
-      setErrorMessage('Something went wrong. Please check your Access Key or try again later.');
+      setErrorMessage('Something went wrong. Please try again later.');
     }
   };
 
