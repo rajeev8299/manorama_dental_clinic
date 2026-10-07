@@ -81,12 +81,12 @@ const About = () => {
               <h2 style={{ fontSize: '3rem', color: 'var(--color-primary)' }}>Mission & Vision</h2>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
-              <Hover3DCard className="premium-card" style={{ padding: '3rem', background: 'linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url("/images/mission_bg.jpg") center/cover', textAlign: 'center' }}>
+              <Hover3DCard className="premium-card" style={{ padding: '3rem', background: 'url("/images/mission_bg.jpg") center/cover', textAlign: 'center' }}>
                 <div style={{ width: '80px', height: '80px', background: 'rgba(8,123,193,0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem' }}>
                   <Heart size={40} color="var(--color-accent)" />
                 </div>
-                <h3 style={{ fontSize: '2.2rem', marginBottom: '1rem', color: '#000', fontWeight: '800', textShadow: '0 2px 15px rgba(255,255,255,1), 0 0 5px rgba(255,255,255,0.8)' }}>Our Mission</h3>
-                <p style={{ fontSize: '1.2rem', color: '#111', fontWeight: '600', lineHeight: 1.8, textShadow: '0 2px 10px rgba(255,255,255,1), 0 0 5px rgba(255,255,255,0.8)' }}>
+                <h3 style={{ fontSize: '2.2rem', marginBottom: '1rem', color: '#000', fontWeight: '900', textShadow: '1px 1px 3px rgba(255,255,255,0.9), -1px -1px 3px rgba(255,255,255,0.9), 1px -1px 3px rgba(255,255,255,0.9), -1px 1px 3px rgba(255,255,255,0.9)' }}>Our Mission</h3>
+                <p style={{ fontSize: '1.2rem', color: '#000', fontWeight: '700', lineHeight: 1.8, textShadow: '1px 1px 3px rgba(255,255,255,0.9), -1px -1px 3px rgba(255,255,255,0.9), 1px -1px 3px rgba(255,255,255,0.9), -1px 1px 3px rgba(255,255,255,0.9)' }}>
                   To provide exceptional, affordable, and painless dental care using state-of-the-art technology, ensuring every patient leaves with a healthy, confident smile.
                 </p>
               </Hover3DCard>
