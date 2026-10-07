@@ -1,30 +1,35 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './AdminLogin.module.css';
+import { supabase } from '../../../lib/supabase';
 
 const AdminLogin = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
+    
     try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem('adminToken', data.token);
+
+      if (signInError) {
+        setError(signInError.message);
+      } else if (data.session) {
         navigate('/admin');
-      } else {
-        setError(data.error || 'Login failed');
       }
-    } catch {
-      setError('Server error');
+    } catch (err: any) {
+      setError(err.message || 'An unexpected error occurred');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -35,14 +40,28 @@ const AdminLogin = () => {
         {error && <div className={styles.error}>{error}</div>}
         <form onSubmit={handleLogin} className={styles.form}>
           <div className={styles.formGroup}>
-            <label>Username</label>
-            <input type="text" value={username} onChange={e => setUsername(e.target.value)} required />
+            <label>Email</label>
+            <input 
+              type="email" 
+              value={email} 
+              onChange={e => setEmail(e.target.value)} 
+              required 
+              disabled={loading}
+            />
           </div>
           <div className={styles.formGroup}>
             <label>Password</label>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+            <input 
+              type="password" 
+              value={password} 
+              onChange={e => setPassword(e.target.value)} 
+              required 
+              disabled={loading}
+            />
           </div>
-          <button type="submit" className={styles.submitBtn}>Login</button>
+          <button type="submit" className={styles.submitBtn} disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
         </form>
       </div>
     </div>

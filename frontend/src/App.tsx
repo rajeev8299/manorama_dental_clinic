@@ -17,6 +17,7 @@ import AdminPatients from './pages/admin/AdminPatients';
 import AdminServices from './pages/admin/AdminServices';
 import AdminReviews from './pages/admin/AdminReviews';
 import AdminReminders from './pages/admin/AdminReminders';
+import AdminMessages from './pages/admin/AdminMessages';
 
 import ScrollToTop from './components/ScrollToTop';
 
@@ -44,6 +45,7 @@ function App() {
             <Route path="services" element={<AdminServices />} />
             <Route path="reviews" element={<AdminReviews />} />
             <Route path="reminders" element={<AdminReminders />} />
+            <Route path="messages" element={<AdminMessages />} />
           </Route>
         </Routes>
       </Router>

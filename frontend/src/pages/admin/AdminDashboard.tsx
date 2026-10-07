@@ -1,8 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './AdminDashboard.module.css';
+import { supabase } from '../../lib/supabase';
 
 const AdminDashboard = () => {
-  const [stats] = useState({ appointments: 142, newPatients: 38, revenue: 84500, rating: 4.8 });
+  const [stats, setStats] = useState({ appointments: 0, messages: 0, revenue: 84500, rating: 4.8 });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const { count: appointmentsCount, error: apptError } = await supabase
+          .from('appointments')
+          .select('*', { count: 'exact', head: true });
+
+        const { count: messagesCount, error: msgError } = await supabase
+          .from('contact_messages')
+          .select('*', { count: 'exact', head: true });
+
+        if (!apptError && !msgError) {
+          setStats(prev => ({
+            ...prev,
+            appointments: appointmentsCount || 0,
+            messages: messagesCount || 0
+          }));
+        }
+      } catch (err) {
+        console.error('Error fetching dashboard stats', err);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <div>
@@ -17,8 +44,8 @@ const AdminDashboard = () => {
           <p className={styles.statNumber}>{stats.appointments}</p>
         </div>
         <div className={styles.statCard}>
-          <h3>New Patients</h3>
-          <p className={styles.statNumber}>+{stats.newPatients}</p>
+          <h3>Contact Messages</h3>
+          <p className={styles.statNumber}>{stats.messages}</p>
         </div>
         <div className={styles.statCard}>
           <h3>Average Rating</h3>
@@ -44,9 +71,8 @@ const AdminDashboard = () => {
         <div style={{ background: 'white', padding: '2rem', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
           <h3 style={{ marginBottom: '1rem', color: '#0F2A4A' }}>Recent Activity</h3>
           <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <li style={{ color: '#64748b' }}>✅ Rahul Verma's appointment completed</li>
-            <li style={{ color: '#64748b' }}>⭐ New 5-star review from Sneha Sharma</li>
-            <li style={{ color: '#64748b' }}>📅 3 new appointments booked for tomorrow</li>
+            <li style={{ color: '#64748b' }}>Check the Appointments tab to view the latest requests.</li>
+            <li style={{ color: '#64748b' }}>Check the Messages tab to view recent contact inquiries.</li>
           </ul>
         </div>
       </div>

@@ -155,6 +155,27 @@ const Contact = () => {
     });
   };
 
+  const submitContactMessage = async (data: typeof formData) => {
+    const { error } = await supabase
+      .from('contact_messages')
+      .insert([
+        {
+          name: data.name,
+          phone: data.phone,
+          email: data.email || null,
+          message: data.message || null,
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          pincode: data.pincode
+        }
+      ]);
+    
+    if (error) {
+      throw error;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
@@ -179,24 +200,7 @@ const Contact = () => {
     }
 
     try {
-      const { error } = await supabase
-        .from('contact_messages')
-        .insert([
-          {
-            name: formData.name,
-            phone: formData.phone,
-            email: formData.email || null,
-            message: formData.message,
-            address: formData.address,
-            city: formData.city,
-            state: formData.state,
-            pincode: formData.pincode
-          }
-        ]);
-      
-      if (error) {
-        throw error;
-      }
+      await submitContactMessage(formData);
       
       setStatus('success');
       setFormData({ name: '', phone: '', email: '', message: '', address: '', city: '', state: '', pincode: '' });

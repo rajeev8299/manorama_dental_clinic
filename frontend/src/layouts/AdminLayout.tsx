@@ -1,17 +1,41 @@
-import { Outlet, Navigate, Link } from 'react-router-dom';
-import { LayoutDashboard, Calendar, Users, LogOut, Star, Bell, Settings } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Outlet, Navigate, Link, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, Calendar, Users, LogOut, Star, Bell, Settings, Mail } from 'lucide-react';
 import styles from './AdminLayout.module.css';
+import { supabase } from '../lib/supabase';
+import { Session } from '@supabase/supabase-js';
 
 const AdminLayout = () => {
-  const token = localStorage.getItem('adminToken');
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  if (!token) {
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (loading) {
+    return <div className={styles.adminContainer}>Loading...</div>;
+  }
+
+  if (!session) {
     return <Navigate to="/admin/login" replace />;
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    window.location.href = '/admin/login';
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/admin/login');
   };
 
   return (
@@ -26,6 +50,9 @@ const AdminLayout = () => {
           </Link>
           <Link to="/admin/appointments" className={styles.navLink}>
             <Calendar size={20} /> Appointments
+          </Link>
+          <Link to="/admin/messages" className={styles.navLink}>
+            <Mail size={20} /> Messages
           </Link>
           <Link to="/admin/patients" className={styles.navLink}>
             <Users size={20} /> Patient Records
