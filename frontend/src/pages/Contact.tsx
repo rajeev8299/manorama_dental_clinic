@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapPin, Phone, Clock } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import { supabase } from '../lib/supabase';
@@ -22,6 +22,98 @@ const cityToStateMap: Record<string, string> = {
   "Gurgaon": "Haryana", "Aligarh": "Uttar Pradesh", "Jalandhar": "Punjab", "Bhubaneswar": "Odisha",
   "Salem": "Tamil Nadu", "Noida": "Uttar Pradesh", "Warangal": "Telangana",
   "Thiruvananthapuram": "Kerala", "Bhavnagar": "Gujarat", "Cuttack": "Odisha"
+};
+
+const INDIAN_STATES = [
+  "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", 
+  "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa", 
+  "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", 
+  "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", 
+  "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", 
+  "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
+];
+
+const SearchableSelect = ({ options, value, onChange, placeholder, name, style }: any) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const filteredOptions = options.filter((opt: string) => opt.toLowerCase().includes(search.toLowerCase()));
+
+  useEffect(() => {
+    if (!isOpen) {
+      setSearch(value);
+    }
+  }, [value, isOpen]);
+
+  return (
+    <div ref={wrapperRef} style={{ position: 'relative', width: '100%' }}>
+      <input
+        type="text"
+        name={name}
+        value={isOpen ? search : value}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setIsOpen(true);
+          onChange({ target: { name, value: e.target.value } });
+        }}
+        onClick={() => setIsOpen(true)}
+        placeholder={placeholder}
+        style={style}
+        autoComplete="off"
+      />
+      {isOpen && (
+        <ul style={{
+          position: 'absolute',
+          top: '100%',
+          left: 0,
+          right: 0,
+          maxHeight: '200px',
+          overflowY: 'auto',
+          backgroundColor: '#fff',
+          border: '1px solid #cbd5e1',
+          borderRadius: '12px',
+          zIndex: 1000,
+          marginTop: '4px',
+          padding: 0,
+          listStyle: 'none',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+        }}>
+          {filteredOptions.length > 0 ? filteredOptions.map((opt: string) => (
+            <li
+              key={opt}
+              onClick={() => {
+                onChange({ target: { name, value: opt } });
+                setIsOpen(false);
+              }}
+              style={{
+                padding: '0.75rem 1rem',
+                cursor: 'pointer',
+                borderBottom: '1px solid #f1f5f9',
+                color: 'var(--color-primary)'
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f8fafc')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#fff')}
+            >
+              {opt}
+            </li>
+          )) : (
+            <li style={{ padding: '0.75rem 1rem', color: '#94a3b8' }}>No results found</li>
+          )}
+        </ul>
+      )}
+    </div>
+  );
 };
 
 const Contact = () => {
@@ -88,9 +180,15 @@ const Contact = () => {
     setStatus('submitting');
     setErrorMessage('');
     
-    if (!formData.name || !formData.phone || !formData.message || !formData.address || !formData.city || !formData.state || !formData.pincode) {
+    if (!formData.name || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.pincode) {
       setStatus('error');
-      setErrorMessage('Please fill in all required fields (Name, Phone, Message, Address, City, State, PIN).');
+      setErrorMessage('Please fill in all required fields (Name, Phone, Address, City, State, PIN).');
+      return;
+    }
+
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setStatus('error');
+      setErrorMessage('Please enter a valid email address.');
       return;
     }
 
@@ -230,132 +328,25 @@ const Contact = () => {
                     <div className="form-row">
                       <div className="input-group">
                         <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>City *</label>
-                        <input 
-                          type="text" 
-                          list="cities-list"
-                          name="city" 
-                          value={formData.city} 
-                          onChange={handleChange} 
-                          required 
+                        <SearchableSelect
+                          name="city"
+                          options={Object.keys(cityToStateMap)}
+                          value={formData.city}
+                          onChange={handleChange}
                           placeholder="Select City ▼"
                           style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none' }}
                         />
-                        <datalist id="cities-list">
-                          <option value="Mumbai" />
-                          <option value="Delhi" />
-                          <option value="Bengaluru" />
-                          <option value="Hyderabad" />
-                          <option value="Ahmedabad" />
-                          <option value="Chennai" />
-                          <option value="Kolkata" />
-                          <option value="Surat" />
-                          <option value="Pune" />
-                          <option value="Jaipur" />
-                          <option value="Lucknow" />
-                          <option value="Kanpur" />
-                          <option value="Nagpur" />
-                          <option value="Indore" />
-                          <option value="Thane" />
-                          <option value="Bhopal" />
-                          <option value="Visakhapatnam" />
-                          <option value="Pimpri-Chinchwad" />
-                          <option value="Patna" />
-                          <option value="Vadodara" />
-                          <option value="Ghaziabad" />
-                          <option value="Ludhiana" />
-                          <option value="Agra" />
-                          <option value="Nashik" />
-                          <option value="Faridabad" />
-                          <option value="Meerut" />
-                          <option value="Rajkot" />
-                          <option value="Kalyan-Dombivli" />
-                          <option value="Vasai-Virar" />
-                          <option value="Varanasi" />
-                          <option value="Srinagar" />
-                          <option value="Aurangabad" />
-                          <option value="Dhanbad" />
-                          <option value="Amritsar" />
-                          <option value="Navi Mumbai" />
-                          <option value="Allahabad" />
-                          <option value="Howrah" />
-                          <option value="Ranchi" />
-                          <option value="Gwalior" />
-                          <option value="Jabalpur" />
-                          <option value="Coimbatore" />
-                          <option value="Vijayawada" />
-                          <option value="Jodhpur" />
-                          <option value="Madurai" />
-                          <option value="Raipur" />
-                          <option value="Kota" />
-                          <option value="Guwahati" />
-                          <option value="Chandigarh" />
-                          <option value="Solapur" />
-                          <option value="Hubli-Dharwad" />
-                          <option value="Bareilly" />
-                          <option value="Mysore" />
-                          <option value="Tiruchirappalli" />
-                          <option value="Gurgaon" />
-                          <option value="Aligarh" />
-                          <option value="Jalandhar" />
-                          <option value="Bhubaneswar" />
-                          <option value="Salem" />
-                          <option value="Noida" />
-                          <option value="Warangal" />
-                          <option value="Thiruvananthapuram" />
-                          <option value="Bhavnagar" />
-                          <option value="Cuttack" />
-                        </datalist>
                       </div>
                       <div className="input-group">
                         <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>State *</label>
-                        <input 
-                          type="text" 
-                          list="states-list"
-                          name="state" 
-                          value={formData.state} 
-                          onChange={handleChange} 
-                          required 
+                        <SearchableSelect
+                          name="state"
+                          options={INDIAN_STATES}
+                          value={formData.state}
+                          onChange={handleChange}
                           placeholder="Select State ▼"
                           style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none' }}
                         />
-                        <datalist id="states-list">
-                          <option value="Andhra Pradesh" />
-                          <option value="Arunachal Pradesh" />
-                          <option value="Assam" />
-                          <option value="Bihar" />
-                          <option value="Chhattisgarh" />
-                          <option value="Goa" />
-                          <option value="Gujarat" />
-                          <option value="Haryana" />
-                          <option value="Himachal Pradesh" />
-                          <option value="Jharkhand" />
-                          <option value="Karnataka" />
-                          <option value="Kerala" />
-                          <option value="Madhya Pradesh" />
-                          <option value="Maharashtra" />
-                          <option value="Manipur" />
-                          <option value="Meghalaya" />
-                          <option value="Mizoram" />
-                          <option value="Nagaland" />
-                          <option value="Odisha" />
-                          <option value="Punjab" />
-                          <option value="Rajasthan" />
-                          <option value="Sikkim" />
-                          <option value="Tamil Nadu" />
-                          <option value="Telangana" />
-                          <option value="Tripura" />
-                          <option value="Uttar Pradesh" />
-                          <option value="Uttarakhand" />
-                          <option value="West Bengal" />
-                          <option value="Andaman and Nicobar Islands" />
-                          <option value="Chandigarh" />
-                          <option value="Dadra and Nagar Haveli and Daman and Diu" />
-                          <option value="Lakshadweep" />
-                          <option value="Delhi" />
-                          <option value="Puducherry" />
-                          <option value="Ladakh" />
-                          <option value="Jammu and Kashmir" />
-                        </datalist>
                       </div>
                     </div>
 
@@ -376,9 +367,13 @@ const Contact = () => {
                         placeholder="Enter PIN Code"
                         style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none' }}
                       />
-                      {pinMessage && (
+                      {pinMessage ? (
                         <p style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: isLocating ? 'var(--color-accent)' : 'var(--color-text-muted)', fontStyle: 'italic' }}>
                           {pinMessage}
+                        </p>
+                      ) : (
+                        <p style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>
+                          Tip: Enter PIN code to auto-fill City & State.
                         </p>
                       )}
                     </div>
@@ -386,13 +381,12 @@ const Contact = () => {
 
 
                     <div className="input-group">
-                      <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Message *</label>
+                      <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Message</label>
                       <textarea 
                         name="message" 
                         value={formData.message} 
                         onChange={handleChange} 
                         rows={4}
-                        required
                         style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none', resize: 'vertical', fontFamily: 'inherit' }}
                       ></textarea>
                     </div>
