@@ -1,7 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MapPin, Phone, Clock } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import { supabase } from '../lib/supabase';
+
+const cityToStateMap: Record<string, string> = {
+  "Mumbai": "Maharashtra", "Delhi": "Delhi", "Bengaluru": "Karnataka", "Hyderabad": "Telangana",
+  "Ahmedabad": "Gujarat", "Chennai": "Tamil Nadu", "Kolkata": "West Bengal", "Surat": "Gujarat",
+  "Pune": "Maharashtra", "Jaipur": "Rajasthan", "Lucknow": "Uttar Pradesh", "Kanpur": "Uttar Pradesh",
+  "Nagpur": "Maharashtra", "Indore": "Madhya Pradesh", "Thane": "Maharashtra", "Bhopal": "Madhya Pradesh",
+  "Visakhapatnam": "Andhra Pradesh", "Pimpri-Chinchwad": "Maharashtra", "Patna": "Bihar",
+  "Vadodara": "Gujarat", "Ghaziabad": "Uttar Pradesh", "Ludhiana": "Punjab", "Agra": "Uttar Pradesh",
+  "Nashik": "Maharashtra", "Faridabad": "Haryana", "Meerut": "Uttar Pradesh", "Rajkot": "Gujarat",
+  "Kalyan-Dombivli": "Maharashtra", "Vasai-Virar": "Maharashtra", "Varanasi": "Uttar Pradesh",
+  "Srinagar": "Jammu and Kashmir", "Aurangabad": "Maharashtra", "Dhanbad": "Jharkhand",
+  "Amritsar": "Punjab", "Navi Mumbai": "Maharashtra", "Allahabad": "Uttar Pradesh",
+  "Howrah": "West Bengal", "Ranchi": "Jharkhand", "Gwalior": "Madhya Pradesh",
+  "Jabalpur": "Madhya Pradesh", "Coimbatore": "Tamil Nadu", "Vijayawada": "Andhra Pradesh",
+  "Jodhpur": "Rajasthan", "Madurai": "Tamil Nadu", "Raipur": "Chhattisgarh", "Kota": "Rajasthan",
+  "Guwahati": "Assam", "Chandigarh": "Chandigarh", "Solapur": "Maharashtra", "Hubli-Dharwad": "Karnataka",
+  "Bareilly": "Uttar Pradesh", "Mysore": "Karnataka", "Tiruchirappalli": "Tamil Nadu",
+  "Gurgaon": "Haryana", "Aligarh": "Uttar Pradesh", "Jalandhar": "Punjab", "Bhubaneswar": "Odisha",
+  "Salem": "Tamil Nadu", "Noida": "Uttar Pradesh", "Warangal": "Telangana",
+  "Thiruvananthapuram": "Kerala", "Bhavnagar": "Gujarat", "Cuttack": "Odisha"
+};
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -18,8 +39,48 @@ const Contact = () => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const [isLocating, setIsLocating] = useState(false);
+  const [pinMessage, setPinMessage] = useState('');
+
+  useEffect(() => {
+    if (formData.pincode.length === 6) {
+      lookupPincode(formData.pincode);
+    } else {
+      setPinMessage('');
+    }
+  }, [formData.pincode]);
+
+  const lookupPincode = async (pin: string) => {
+    setIsLocating(true);
+    setPinMessage('Finding location...');
+    try {
+      const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+      const data = await res.json();
+      if (data && data[0] && data[0].Status === 'Success' && data[0].PostOffice && data[0].PostOffice.length > 0) {
+        const postOffice = data[0].PostOffice[0];
+        const city = postOffice.District || postOffice.Block || postOffice.Name;
+        const state = postOffice.State;
+        setFormData(prev => ({ ...prev, city, state }));
+        setPinMessage('');
+      } else {
+        setPinMessage('City and state could not be found for this PIN code. Please select them manually.');
+      }
+    } catch (error) {
+      setPinMessage('Could not fetch location. Please enter manually.');
+    } finally {
+      setIsLocating(false);
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => {
+      const newData = { ...prev, [name]: value };
+      if (name === 'city' && cityToStateMap[value]) {
+        newData.state = cityToStateMap[value];
+      }
+      return newData;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -307,7 +368,7 @@ const Contact = () => {
                         onChange={(e) => {
                           const val = e.target.value.replace(/\D/g, '');
                           if (val.length <= 6) {
-                            setFormData({ ...formData, pincode: val });
+                            setFormData(prev => ({ ...prev, pincode: val }));
                           }
                         }} 
                         required 
@@ -315,6 +376,11 @@ const Contact = () => {
                         placeholder="Enter PIN Code"
                         style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none' }}
                       />
+                      {pinMessage && (
+                        <p style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: isLocating ? 'var(--color-accent)' : 'var(--color-text-muted)', fontStyle: 'italic' }}>
+                          {pinMessage}
+                        </p>
+                      )}
                     </div>
 
 
