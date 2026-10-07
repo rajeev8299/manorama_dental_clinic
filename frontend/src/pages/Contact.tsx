@@ -2,27 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { MapPin, Phone, Clock } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import { supabase } from '../lib/supabase';
-
-const cityToStateMap: Record<string, string> = {
-  "Mumbai": "Maharashtra", "Delhi": "Delhi", "Bengaluru": "Karnataka", "Hyderabad": "Telangana",
-  "Ahmedabad": "Gujarat", "Chennai": "Tamil Nadu", "Kolkata": "West Bengal", "Surat": "Gujarat",
-  "Pune": "Maharashtra", "Jaipur": "Rajasthan", "Lucknow": "Uttar Pradesh", "Kanpur": "Uttar Pradesh",
-  "Nagpur": "Maharashtra", "Indore": "Madhya Pradesh", "Thane": "Maharashtra", "Bhopal": "Madhya Pradesh",
-  "Visakhapatnam": "Andhra Pradesh", "Pimpri-Chinchwad": "Maharashtra", "Patna": "Bihar",
-  "Vadodara": "Gujarat", "Ghaziabad": "Uttar Pradesh", "Ludhiana": "Punjab", "Agra": "Uttar Pradesh",
-  "Nashik": "Maharashtra", "Faridabad": "Haryana", "Meerut": "Uttar Pradesh", "Rajkot": "Gujarat",
-  "Kalyan-Dombivli": "Maharashtra", "Vasai-Virar": "Maharashtra", "Varanasi": "Uttar Pradesh",
-  "Srinagar": "Jammu and Kashmir", "Aurangabad": "Maharashtra", "Dhanbad": "Jharkhand",
-  "Amritsar": "Punjab", "Navi Mumbai": "Maharashtra", "Allahabad": "Uttar Pradesh",
-  "Howrah": "West Bengal", "Ranchi": "Jharkhand", "Gwalior": "Madhya Pradesh",
-  "Jabalpur": "Madhya Pradesh", "Coimbatore": "Tamil Nadu", "Vijayawada": "Andhra Pradesh",
-  "Jodhpur": "Rajasthan", "Madurai": "Tamil Nadu", "Raipur": "Chhattisgarh", "Kota": "Rajasthan",
-  "Guwahati": "Assam", "Chandigarh": "Chandigarh", "Solapur": "Maharashtra", "Hubli-Dharwad": "Karnataka",
-  "Bareilly": "Uttar Pradesh", "Mysore": "Karnataka", "Tiruchirappalli": "Tamil Nadu",
-  "Gurgaon": "Haryana", "Aligarh": "Uttar Pradesh", "Jalandhar": "Punjab", "Bhubaneswar": "Odisha",
-  "Salem": "Tamil Nadu", "Noida": "Uttar Pradesh", "Warangal": "Telangana",
-  "Thiruvananthapuram": "Kerala", "Bhavnagar": "Gujarat", "Cuttack": "Odisha"
-};
+import { cityToStateMap } from '../data/indianCities';
 
 const INDIAN_STATES = [
   "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", 
