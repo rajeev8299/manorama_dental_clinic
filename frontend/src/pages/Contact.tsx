@@ -8,7 +8,11 @@ const Contact = () => {
     name: '',
     phone: '',
     email: '',
-    message: ''
+    message: '',
+    address: '',
+    city: '',
+    state: '',
+    pincode: ''
   });
   
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -23,9 +27,15 @@ const Contact = () => {
     setStatus('submitting');
     setErrorMessage('');
     
-    if (!formData.name || !formData.phone || !formData.message) {
+    if (!formData.name || !formData.phone || !formData.message || !formData.address || !formData.city || !formData.state || !formData.pincode) {
       setStatus('error');
-      setErrorMessage('Please fill in all required fields (Name, Phone, Message).');
+      setErrorMessage('Please fill in all required fields (Name, Phone, Message, Address, City, State, PIN).');
+      return;
+    }
+
+    if (!/^\d{6}$/.test(formData.pincode)) {
+      setStatus('error');
+      setErrorMessage('Please enter a valid 6-digit PIN code.');
       return;
     }
 
@@ -37,7 +47,11 @@ const Contact = () => {
             name: formData.name,
             phone: formData.phone,
             email: formData.email || null,
-            message: formData.message
+            message: formData.message,
+            address: formData.address,
+            city: formData.city,
+            state: formData.state,
+            pincode: formData.pincode
           }
         ]);
       
@@ -46,7 +60,7 @@ const Contact = () => {
       }
       
       setStatus('success');
-      setFormData({ name: '', phone: '', email: '', message: '' });
+      setFormData({ name: '', phone: '', email: '', message: '', address: '', city: '', state: '', pincode: '' });
     } catch (err) {
       console.error('Error submitting message:', err);
       setStatus('error');
@@ -135,6 +149,170 @@ const Contact = () => {
                         name="email" 
                         value={formData.email} 
                         onChange={handleChange} 
+                        style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none' }}
+                      />
+                    </div>
+
+                    <div className="input-group">
+                      <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Address *</label>
+                      <input 
+                        type="text" 
+                        name="address" 
+                        value={formData.address} 
+                        onChange={handleChange} 
+                        required 
+                        placeholder="Enter your address"
+                        style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none' }}
+                      />
+                    </div>
+
+                    <div className="form-row">
+                      <div className="input-group">
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>City *</label>
+                        <input 
+                          type="text" 
+                          list="cities-list"
+                          name="city" 
+                          value={formData.city} 
+                          onChange={handleChange} 
+                          required 
+                          placeholder="Select City ▼"
+                          style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none' }}
+                        />
+                        <datalist id="cities-list">
+                          <option value="Mumbai" />
+                          <option value="Delhi" />
+                          <option value="Bengaluru" />
+                          <option value="Hyderabad" />
+                          <option value="Ahmedabad" />
+                          <option value="Chennai" />
+                          <option value="Kolkata" />
+                          <option value="Surat" />
+                          <option value="Pune" />
+                          <option value="Jaipur" />
+                          <option value="Lucknow" />
+                          <option value="Kanpur" />
+                          <option value="Nagpur" />
+                          <option value="Indore" />
+                          <option value="Thane" />
+                          <option value="Bhopal" />
+                          <option value="Visakhapatnam" />
+                          <option value="Pimpri-Chinchwad" />
+                          <option value="Patna" />
+                          <option value="Vadodara" />
+                          <option value="Ghaziabad" />
+                          <option value="Ludhiana" />
+                          <option value="Agra" />
+                          <option value="Nashik" />
+                          <option value="Faridabad" />
+                          <option value="Meerut" />
+                          <option value="Rajkot" />
+                          <option value="Kalyan-Dombivli" />
+                          <option value="Vasai-Virar" />
+                          <option value="Varanasi" />
+                          <option value="Srinagar" />
+                          <option value="Aurangabad" />
+                          <option value="Dhanbad" />
+                          <option value="Amritsar" />
+                          <option value="Navi Mumbai" />
+                          <option value="Allahabad" />
+                          <option value="Howrah" />
+                          <option value="Ranchi" />
+                          <option value="Gwalior" />
+                          <option value="Jabalpur" />
+                          <option value="Coimbatore" />
+                          <option value="Vijayawada" />
+                          <option value="Jodhpur" />
+                          <option value="Madurai" />
+                          <option value="Raipur" />
+                          <option value="Kota" />
+                          <option value="Guwahati" />
+                          <option value="Chandigarh" />
+                          <option value="Solapur" />
+                          <option value="Hubli-Dharwad" />
+                          <option value="Bareilly" />
+                          <option value="Mysore" />
+                          <option value="Tiruchirappalli" />
+                          <option value="Gurgaon" />
+                          <option value="Aligarh" />
+                          <option value="Jalandhar" />
+                          <option value="Bhubaneswar" />
+                          <option value="Salem" />
+                          <option value="Noida" />
+                          <option value="Warangal" />
+                          <option value="Thiruvananthapuram" />
+                          <option value="Bhavnagar" />
+                          <option value="Cuttack" />
+                        </datalist>
+                      </div>
+                      <div className="input-group">
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>State *</label>
+                        <input 
+                          type="text" 
+                          list="states-list"
+                          name="state" 
+                          value={formData.state} 
+                          onChange={handleChange} 
+                          required 
+                          placeholder="Select State ▼"
+                          style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none' }}
+                        />
+                        <datalist id="states-list">
+                          <option value="Andhra Pradesh" />
+                          <option value="Arunachal Pradesh" />
+                          <option value="Assam" />
+                          <option value="Bihar" />
+                          <option value="Chhattisgarh" />
+                          <option value="Goa" />
+                          <option value="Gujarat" />
+                          <option value="Haryana" />
+                          <option value="Himachal Pradesh" />
+                          <option value="Jharkhand" />
+                          <option value="Karnataka" />
+                          <option value="Kerala" />
+                          <option value="Madhya Pradesh" />
+                          <option value="Maharashtra" />
+                          <option value="Manipur" />
+                          <option value="Meghalaya" />
+                          <option value="Mizoram" />
+                          <option value="Nagaland" />
+                          <option value="Odisha" />
+                          <option value="Punjab" />
+                          <option value="Rajasthan" />
+                          <option value="Sikkim" />
+                          <option value="Tamil Nadu" />
+                          <option value="Telangana" />
+                          <option value="Tripura" />
+                          <option value="Uttar Pradesh" />
+                          <option value="Uttarakhand" />
+                          <option value="West Bengal" />
+                          <option value="Andaman and Nicobar Islands" />
+                          <option value="Chandigarh" />
+                          <option value="Dadra and Nagar Haveli and Daman and Diu" />
+                          <option value="Lakshadweep" />
+                          <option value="Delhi" />
+                          <option value="Puducherry" />
+                          <option value="Ladakh" />
+                          <option value="Jammu and Kashmir" />
+                        </datalist>
+                      </div>
+                    </div>
+
+                    <div className="input-group" style={{ maxWidth: '250px' }}>
+                      <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>PIN Code *</label>
+                      <input 
+                        type="text" 
+                        name="pincode" 
+                        value={formData.pincode} 
+                        onChange={(e) => {
+                          const val = e.target.value.replace(/\D/g, '');
+                          if (val.length <= 6) {
+                            setFormData({ ...formData, pincode: val });
+                          }
+                        }} 
+                        required 
+                        maxLength={6}
+                        placeholder="Enter PIN Code"
                         style={{ width: '100%', padding: '1rem', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f1f5f9', transition: 'all 0.3s ease', fontSize: '1rem', outline: 'none' }}
                       />
                     </div>
