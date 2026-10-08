@@ -15,12 +15,12 @@ const SplashScreen = () => {
     const openTimer = setTimeout(() => {
       setIsOpen(true);
       sessionStorage.setItem('hasVisitedSplash', 'true');
-    }, 2000); // 2 seconds delay to show the clinic name
+    }, 800); // 800ms delay to show the clinic name
 
     // Remove the component from DOM after animation completes
     const removeTimer = setTimeout(() => {
       setIsRendered(false);
-    }, 3200); // 2s delay + 1s animation + 200ms buffer
+    }, 1300); // 800ms delay + 400ms animation + 100ms buffer
 
     return () => {
       clearTimeout(openTimer);

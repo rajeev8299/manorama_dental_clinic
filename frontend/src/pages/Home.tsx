@@ -6,16 +6,15 @@ import Hover3DCard from '../components/Hover3DCard';
 import { CountUp } from '../components/CountUp';
 import { BeforeAfterSlider } from '../components/BeforeAfterSlider';
 import { DentalVideoSection } from '../components/DentalVideoSection';
-import { Calendar, Shield, Heart, Smile, Activity, ChevronRight, Settings, CheckCircle, User, Star, Quote } from 'lucide-react';
+import { Calendar, Shield, Heart, Smile, Activity, ChevronRight, Settings, CheckCircle, Star, Quote } from 'lucide-react';
 import styles from './Home.module.css';
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   
   const slides = [
-    "/images/hero-1.jpg", 
-    "/images/hero-2.jpg", 
-    "/images/hero-3.jpg"  
+    "/images/clinic-front-banner.jpg", 
+    "/images/doctor-patient.jpg"
   ];
 
   useEffect(() => {
@@ -78,7 +77,7 @@ const Home = () => {
         <div className={`container ${styles.heroContainerCenter}`}>
           <div className={styles.heroContentCenter}>
             <div className={styles.eyebrowLightCenter}>
-              <span className={styles.lineLight}></span> MANORAMA MULTISPECIALITY DENTAL CLINIC <span className={styles.lineLight}></span>
+              <span className={styles.lineLight}></span> <span className={styles.cyanGradientText}>MANORAMA</span>&nbsp;<span className={styles.goldGradientText}>MULTISPECIALITY DENTAL CLINIC</span> <span className={styles.lineLight}></span>
             </div>
             <h1 className={styles.heroTitleLight}>
               Premium Dental Care in <br/>
@@ -89,7 +88,7 @@ const Home = () => {
             </p>
             
             <div className={styles.heroButtonsCenter}>
-              <Link to="/contact" className={styles.btnPrimary}>
+              <Link to="/about" className={styles.btnPrimary}>
                 <Calendar size={18} /> Book an Appointment <ChevronRight size={18} />
               </Link>
               <Link to="/services" className={styles.btnOutlineLight}>
@@ -97,25 +96,34 @@ const Home = () => {
               </Link>
             </div>
 
-            <div className={styles.heroFeaturesCenter}>
-              <div className={styles.featureItemLight}>
-                <div className={styles.iconCircleLight}><Smile size={24} color="#0EA5E9" /></div>
-                <span>Advanced<br/>Technology</span>
-              </div>
-              <div className={styles.featureDividerLight}></div>
-              <div className={styles.featureItemLight}>
-                <div className={styles.iconCircleLight}><User size={24} color="#0EA5E9" /></div>
-                <span>Personalized<br/>Care</span>
-              </div>
-              <div className={styles.featureDividerLight}></div>
-              <div className={styles.featureItemLight}>
-                <div className={styles.iconCircleLight}><Shield size={24} color="#0EA5E9" /></div>
-                <span>Comfortable<br/>Environment</span>
-              </div>
-            </div>
+
           </div>
         </div>
       </section>
+
+      {/* Stats Section */}
+      <ScrollReveal>
+      <section className={styles.statsSection}>
+        <div className={`container ${styles.statsGrid}`}>
+          <Hover3DCard className={styles.statCard}>
+            <h3 className={styles.statNumber}><CountUp end={15} suffix="+" /></h3>
+            <p className={styles.statLabel}>Years of Experience</p>
+          </Hover3DCard>
+          <Hover3DCard className={styles.statCard}>
+            <h3 className={styles.statNumber}><CountUp end={10} suffix="k+" /></h3>
+            <p className={styles.statLabel}>Happy Smiles</p>
+          </Hover3DCard>
+          <Hover3DCard className={styles.statCard}>
+            <h3 className={styles.statNumber}><CountUp end={100} suffix="%" /></h3>
+            <p className={styles.statLabel}>Patient Satisfaction</p>
+          </Hover3DCard>
+          <Hover3DCard className={styles.statCard}>
+            <h3 className={styles.statNumber}><CountUp end={50} suffix="+" /></h3>
+            <p className={styles.statLabel}>Advanced Equipments</p>
+          </Hover3DCard>
+        </div>
+      </section>
+      </ScrollReveal>
 
       <DentalVideoSection />
 
@@ -269,30 +277,6 @@ const Home = () => {
               </>
             }
           />
-        </div>
-      </section>
-      </ScrollReveal>
-
-      {/* Stats Section */}
-      <ScrollReveal>
-      <section className={styles.statsSection}>
-        <div className={`container ${styles.statsGrid}`}>
-          <Hover3DCard className={styles.statCard}>
-            <h3 className={styles.statNumber}><CountUp end={15} suffix="+" /></h3>
-            <p className={styles.statLabel}>Years of Experience</p>
-          </Hover3DCard>
-          <Hover3DCard className={styles.statCard}>
-            <h3 className={styles.statNumber}><CountUp end={10} suffix="k+" /></h3>
-            <p className={styles.statLabel}>Happy Smiles</p>
-          </Hover3DCard>
-          <Hover3DCard className={styles.statCard}>
-            <h3 className={styles.statNumber}><CountUp end={100} suffix="%" /></h3>
-            <p className={styles.statLabel}>Patient Satisfaction</p>
-          </Hover3DCard>
-          <Hover3DCard className={styles.statCard}>
-            <h3 className={styles.statNumber}><CountUp end={50} suffix="+" /></h3>
-            <p className={styles.statLabel}>Advanced Equipments</p>
-          </Hover3DCard>
         </div>
       </section>
       </ScrollReveal>

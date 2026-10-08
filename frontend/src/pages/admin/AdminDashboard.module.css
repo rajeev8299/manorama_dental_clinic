@@ -1,27 +1,178 @@
-.pageTitle {
-  font-family: 'Cormorant Garamond', serif;
-  color: #0F2A4A;
-  font-size: 2.5rem;
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
   margin-bottom: 2rem;
 }
-.statsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
+
 .statCard {
-  background: white;
-  padding: 2rem;
+  background-color: var(--admin-surface);
+  border: 1px solid var(--admin-border);
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.statCard h3 {
-  color: #64748b;
-  font-size: 1rem;
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.statHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
 }
-.statNumber {
-  font-size: 2.5rem;
+
+.statTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--admin-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.statIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statValue {
+  font-size: 2.25rem;
   font-weight: 700;
-  color: #0EA5E9;
+  color: var(--admin-primary);
+  margin: 0;
+  line-height: 1;
+}
+
+.statSubtext {
+  font-size: 0.85rem;
+  color: var(--admin-text-muted);
+  margin-top: 0.5rem;
+}
+
+.recentSection {
+  background-color: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.sectionHeader {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--admin-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionHeader h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--admin-primary);
+  margin: 0;
+}
+
+.viewAllBtn {
+  font-size: 0.875rem;
+  color: var(--admin-accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.viewAllBtn:hover {
+  text-decoration: underline;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 1rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--admin-text-muted);
+  background-color: var(--admin-bg);
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.table td {
+  padding: 1rem 1.5rem;
+  font-size: 0.95rem;
+  color: var(--admin-text);
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover td {
+  background-color: var(--admin-hover);
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badgeSuccess {
+  background-color: var(--admin-success-bg);
+  color: var(--admin-success);
+}
+
+.badgeWarning {
+  background-color: var(--admin-warning-bg);
+  color: var(--admin-warning);
+}
+
+.badgeDanger {
+  background-color: var(--admin-danger-bg);
+  color: var(--admin-danger);
+}
+
+.badgeNeutral {
+  background-color: var(--admin-hover);
+  color: var(--admin-text-muted);
+}
+
+.badgeAccent {
+  background-color: var(--admin-active-bg);
+  color: var(--admin-accent);
+}
+
+.emptyState {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--admin-text-muted);
+}
+
+.emptyStateIcon {
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.loadingState {
+  padding: 3rem;
+  display: flex;
+  justify-content: center;
+  color: var(--admin-text-muted);
 }

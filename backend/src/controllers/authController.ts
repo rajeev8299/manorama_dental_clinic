@@ -6,22 +6,9 @@ export const loginAdmin = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
     
-    // In-memory Mock Auth
-    if (username === 'admin' && password === 'admin123') {
-      const token = jwt.sign(
-        { id: '1', role: 'admin' },
-        process.env.JWT_SECRET || 'secret123',
-        { expiresIn: '30d' }
-      );
-      return res.json({
-        _id: '1',
-        username: 'admin',
-        role: 'admin',
-        token,
-      });
-    } else {
-      return res.status(401).json({ error: 'Invalid username or password' });
-    }
+    // Legacy mock auth is disabled.
+    // Use Supabase Authentication directly in the frontend instead.
+    return res.status(401).json({ error: 'Legacy mock authentication is disabled. Please use Supabase Auth.' });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

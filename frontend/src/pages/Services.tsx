@@ -132,11 +132,16 @@ const Services = () => {
             </div>
             
             <BeforeAfterSlider 
-              beforeImage="https://placehold.co/900x500/e2e8f0/64748b?text=Before+Treatment" 
-              afterImage="https://placehold.co/900x500/0ea5e9/ffffff?text=After+Treatment"
+              beforeImage="/images/real_before_smile.jpg" 
+              afterImage="/images/real_after_smile.jpg"
               beforeLabel="BEFORE • DISCOLORED & UNEVEN"
               afterLabel="AFTER • PORCELAIN VENEERS"
-              bottomLabel="✨ 3D Digital Smile Design • E-Max Porcelain"
+              bottomLabel={
+                <>
+                  <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#0ea5e9', boxShadow: '0 0 5px #0ea5e9', marginRight: '6px' }}></span>
+                  ✨ 3D Digital Smile Design • E-Max Porcelain
+                </>
+              }
             />
           </ScrollReveal>
         </div>

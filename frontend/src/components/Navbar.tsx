@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -36,14 +35,13 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className={styles.navLinks}>
             {navLinks.map((link) => (
-              <Link 
+              <NavLink 
                 key={link.name} 
                 to={link.path} 
-                className={styles.navLink}
-                style={{ color: location.pathname === link.path ? 'var(--color-primary)' : '' }}
+                className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
               >
                 {link.name}
-              </Link>
+              </NavLink>
             ))}
             <Link to="/book-appointment" className={styles.btnPrimary}>
               Book Appointment
@@ -64,14 +62,14 @@ const Navbar = () => {
         {isMobileMenuOpen && (
           <div className={styles.mobileMenu}>
             {navLinks.map((link) => (
-              <Link 
+              <NavLink 
                 key={link.name} 
                 to={link.path} 
-                className={styles.navLink}
+                className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.name}
-              </Link>
+              </NavLink>
             ))}
             <Link 
               to="/book-appointment" 

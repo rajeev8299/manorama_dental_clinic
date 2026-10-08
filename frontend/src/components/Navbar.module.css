@@ -66,6 +66,10 @@
 .navLink:hover, .navLink:active {
   color: var(--color-accent);
 }
+.active {
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+}
 
 .btnPrimary {
   background-color: var(--color-primary);
