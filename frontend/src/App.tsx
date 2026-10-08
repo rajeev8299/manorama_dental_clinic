@@ -3,6 +3,7 @@ import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
+import Testimonials from './pages/Testimonials';
 
 import Contact from './pages/Contact';
 import BookAppointment from './pages/BookAppointment';
@@ -32,6 +33,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="services" element={<Services />} />
+            <Route path="testimonials" element={<Testimonials />} />
             <Route path="contact" element={<Contact />} />
             <Route path="book-appointment" element={<BookAppointment />} />
           </Route>
