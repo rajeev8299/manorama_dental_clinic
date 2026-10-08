@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import styles from './DentalVideoSection.module.css';
 
 export const DentalVideoSection: React.FC = () => {
@@ -15,6 +17,12 @@ export const DentalVideoSection: React.FC = () => {
             playsInline
             preload="metadata"
           />
+          <Link to="/about" className={styles.visitButton}>
+            Visit doctor 
+            <span className={styles.iconCircle}>
+              <ArrowRight strokeWidth={2} color="#0f172a" className={styles.arrowIcon} />
+            </span>
+          </Link>
         </div>
       </div>
     </section>

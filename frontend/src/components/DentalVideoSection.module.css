@@ -15,6 +15,7 @@
 }
 
 .videoWrapper {
+  position: relative;
   width: 100%;
   border-radius: 24px;
   overflow: hidden;
@@ -22,6 +23,7 @@
   border: 4px solid #ffffff; /* soft white border */
   aspect-ratio: 1808 / 682; /* match exact original aspect ratio */
   background-color: #f0f7ff; /* soft sky blue fallback */
+  container-type: inline-size;
 }
 
 .video {
@@ -29,6 +31,50 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Button Styles */
+.visitButton {
+  position: absolute;
+  top: 60.5%; /* Positioned precisely to cover the video button */
+  left: 51%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 0.75cqw;
+  background-color: #d1fae5; /* Exact match to video button color */
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 1.15cqw;
+  /* Extra padding to guarantee complete coverage of the baked-in button */
+  padding: 1cqw 1.5cqw 1cqw 2cqw; 
+  border-radius: 9999px;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.visitButton:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.iconCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  width: 2.3cqw;
+  height: 2.3cqw;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.arrowIcon {
+  width: 1.1cqw;
+  height: 1.1cqw;
 }
 
 /* Tablet */
